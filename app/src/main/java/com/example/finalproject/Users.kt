@@ -169,19 +169,36 @@ object DummyDataStore {
     var currentUser: User? = null
     var expenseIdCounter = expenses.size
 
+    // Add Expense
     fun addExpense(expense: Expense) {
         expenses.add(expense.copy(id = expenseIdCounter++))
     }
 
-    fun editExpense(id: Int, newExpense: Expense) {
+    // Edit Expense (this function is for modifying an existing expense)
+    fun editExpense(id: Int, newAmount: Double) {
         val index = expenses.indexOfFirst { it.id == id }
-        if (index != -1) expenses[index] = newExpense.copy(id = id)
+        if (index != -1) {
+            val oldExpense = expenses[index]
+            val updatedExpense = oldExpense.copy(amount = newAmount)
+            expenses[index] = updatedExpense
+        }
     }
 
+    // Delete Expense
     fun deleteExpense(id: Int) {
         expenses.removeAll { it.id == id }
     }
 
+    // Clear All Expenses and Budgets for the current user
+    fun clearAll() {
+        if (currentUser != null) {
+            // Remove all expenses and budgets for the current user
+            expenses.removeAll { it.username == currentUser!!.username }
+            budgets.removeAll { it.username == currentUser!!.username }
+        }
+    }
+
+    // Login
     fun login(username: String, password: String): Boolean {
         val user = users.find { it.username == username && it.password == password }
         return if (user != null) {
@@ -192,16 +209,19 @@ object DummyDataStore {
         }
     }
 
+    // Logout
     fun logout() {
         currentUser = null
     }
 
+    // Get Expenses for Current User
     fun getUserExpenses(): List<Expense> {
         return currentUser?.let { user ->
             expenses.filter { it.username == user.username }
         } ?: emptyList()
     }
 
+    // Get Budgets for Current User
     fun getUserBudgets(): List<Budget> {
         return currentUser?.let { user ->
             budgets.filter { it.username == user.username }

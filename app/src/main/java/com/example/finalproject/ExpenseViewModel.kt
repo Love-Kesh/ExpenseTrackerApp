@@ -23,8 +23,10 @@ class ExpenseViewModel : ViewModel() {
         refreshExpenses()
     }
 
-    fun editExpense(id: Int, newExpense: Expense) {
-        DummyDataStore.editExpense(id, newExpense)
+    // Refactored editExpense method
+    fun updateExpense(id: Int, newAmount: Double) {
+        // Using the existing method in DummyDataStore to edit the expense
+        DummyDataStore.editExpense(id, newAmount)
         refreshExpenses()
     }
 

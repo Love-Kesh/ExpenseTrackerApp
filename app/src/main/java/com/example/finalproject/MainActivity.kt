@@ -42,7 +42,11 @@ fun ExpenseApp() {
         }
         composable("home") { HomePage(viewModel, onNavigate = { navController.navigate(it) }) }
         composable("add") { AddExpensePage(viewModel) { navController.popBackStack() } }
-        composable("view") { ViewExpensesPage(viewModel) { navController.popBackStack() } }
+        composable("view") {
+            ViewExpensesPage(viewModel = viewModel) {
+                navController.popBackStack()
+            }
+        }
         composable("budgets") { SetBudgetsPage { navController.popBackStack() } }
         composable("reports") { ExpenseReportsPage(viewModel) { navController.popBackStack() } }
         composable("calendar") { RecurringPage(viewModel) { navController.popBackStack() } }
